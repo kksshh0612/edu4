@@ -53,10 +53,10 @@ jobs:
       - name: Scan Docker image with Trivy
         uses: aquasecurity/trivy-action@master
         with:
-          image-ref: ${{ steps.meta.outputs.tags }}
+          image-ref: ghcr.io/${{ github.repository }}:latest
           format: table
           severity: CRITICAL,HIGH
-          exit-code: 1  # 취약점 발견 시 워크플로우 실패 처리
+          exit-code: 1
 
       - name: Push Docker image
         if: success()  # Trivy 통과한 경우만 push
