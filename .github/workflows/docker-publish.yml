@@ -34,35 +34,35 @@ jobs:
           images: ghcr.io/${{ github.repository }}
           tags: ${{ github.event.inputs.name }} 
       
-      # - name: Build and push Docker images
-      #   uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
-      #   with:
-      #     context: .
-      #     push: true
-      #     tags: ${{ steps.meta.outputs.tags }}
-      #     labels: ${{ steps.meta.outputs.labels }}
-
-      - name: Build Docker image (no push yet)
-        uses: docker/build-push-action@v5
-        with:
-          context: .
-          push: false
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
-
-      - name: Scan Docker image with Trivy
-        uses: aquasecurity/trivy-action@master
-        with:
-          image-ref: ${{ steps.meta.outputs.tags }}
-          format: table
-          severity: CRITICAL,HIGH
-          exit-code: 1  # 취약점 발견 시 워크플로우 실패 처리
-
-      - name: Push Docker image
-        if: success()  # Trivy 통과한 경우만 push
-        uses: docker/build-push-action@v5
+      - name: Build and push Docker images
+        uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
         with:
           context: .
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+
+      # - name: Build Docker image (no push yet)
+      #   uses: docker/build-push-action@v5
+      #   with:
+      #     context: .
+      #     push: false
+      #     tags: ${{ steps.meta.outputs.tags }}
+      #     labels: ${{ steps.meta.outputs.labels }}
+
+      # - name: Scan Docker image with Trivy
+      #   uses: aquasecurity/trivy-action@master
+      #   with:
+      #     image-ref: ${{ steps.meta.outputs.tags }}
+      #     format: table
+      #     severity: CRITICAL,HIGH
+      #     exit-code: 1  # 취약점 발견 시 워크플로우 실패 처리
+
+      # - name: Push Docker image
+      #   if: success()  # Trivy 통과한 경우만 push
+      #   uses: docker/build-push-action@v5
+      #   with:
+      #     context: .
+      #     push: true
+      #     tags: ${{ steps.meta.outputs.tags }}
+      #     labels: ${{ steps.meta.outputs.labels }}
